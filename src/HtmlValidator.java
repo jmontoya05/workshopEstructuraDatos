@@ -11,10 +11,7 @@ public class HtmlValidator {
 
             if (tags.peek().isSelfClosing()) {
                 tags.remove();
-                continue;
-            }
-
-            if (!tags.peek().isOpenTag()) {
+            } else if (!tags.peek().isOpenTag()) {
                 if (stackHtmlElememts.empty()) {
                     return null;
                 }
@@ -22,13 +19,12 @@ public class HtmlValidator {
                 if (stackHtmlElememts.peek().matches(tags.peek())) {
                     stackHtmlElememts.pop();
                     tags.remove();
-                    continue;
+                } else {
+                    return stackHtmlElememts;
                 }
-
-                return stackHtmlElememts;
+            } else {
+                stackHtmlElememts.push(tags.remove());
             }
-
-            stackHtmlElememts.push(tags.remove());
         }
 
         return stackHtmlElememts;
