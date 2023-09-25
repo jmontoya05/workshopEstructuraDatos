@@ -1,16 +1,37 @@
 import java.util.Queue;
 import java.util.Stack;
 
-
 public class HtmlValidator {
 
-	public static Stack<HtmlTag> isValidHtml(Queue<HtmlTag> tags) {
+    public static Stack<HtmlTag> isValidHtml(Queue<HtmlTag> tags) {
 
-		/* IMPLEMENT THIS METHOD! */
+        Stack<HtmlTag> stackHtmlElememts = new Stack<>();
 
-		return null; // this line is here only so this code will compile if you don't modify it
-	}
-	
+        while (!tags.isEmpty()) {
 
+            if (tags.peek().isSelfClosing()) {
+                tags.remove();
+                continue;
+            }
+
+            if (!tags.peek().isOpenTag()) {
+                if (stackHtmlElememts.empty()) {
+                    return null;
+                }
+
+                if (stackHtmlElememts.peek().matches(tags.peek())) {
+                    stackHtmlElememts.pop();
+                    tags.remove();
+                    continue;
+                }
+
+                return stackHtmlElememts;
+            }
+
+            stackHtmlElememts.push(tags.remove());
+        }
+
+        return stackHtmlElememts;
+    }
 }
 
